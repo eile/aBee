@@ -1,7 +1,7 @@
 # aBee
 An application to compare two versions of the ArcGIS JS API
 
-[Live Version](https://eile.github.io/aBee/?webscene=6d3adbbdb8274328912c68e13d06e0f3&animate=true&stats=true)
+[Live Version](https://eile.github.io/aBee/)
 
 ## Supported URL parameters
 
