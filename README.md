@@ -1,4 +1,4 @@
-# aBee
+# aBee :bee:
 An application to compare two versions of the ArcGIS JS API
 
 [Live Version](https://eile.github.io/aBee/)
