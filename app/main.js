@@ -9,11 +9,25 @@ require([
   "esri/views/SceneView",
   "esri/views/support/waitForResources",
   "app/syncUtil"
-], function(has, config, esriRequest, WebScene, watchUtils, Layer, MapView, SceneView, waitForResources, syncUtil) {
+], function(
+  has,
+  config,
+  esriRequest,
+  WebScene,
+  watchUtils,
+  Layer,
+  MapView,
+  SceneView,
+  waitForResources,
+  syncUtil
+) {
   var params = {};
-  var parts = window.parent.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m, key, value) {
-    params[key] = value;
-  });
+  var parts = window.parent.location.href.replace(
+    /[?&]+([^=&]+)=([^&]*)/gi,
+    function(m, key, value) {
+      params[key] = value;
+    }
+  );
 
   has.add("disable-feature:single-idb-cache", 1);
 
