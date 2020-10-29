@@ -8,8 +8,8 @@ require([
   "esri/views/MapView",
   "esri/views/SceneView",
   "esri/views/support/waitForResources",
-  "app/syncUtil"
-], function(
+  "app/syncUtil",
+], function (
   has,
   config,
   esriRequest,
@@ -21,10 +21,14 @@ require([
   waitForResources,
   syncUtil
 ) {
+  esriRequest = esriRequest.default || esriRequest;
+  WebScene = WebScene.default || WebScene;
+  SceneView = SceneView.default || SceneView;
+
   var params = {};
   var parts = window.parent.location.href.replace(
     /[?&]+([^=&]+)=([^&]*)/gi,
-    function(m, key, value) {
+    function (m, key, value) {
       params[key] = value;
     }
   );
@@ -39,27 +43,31 @@ require([
   var sceneView = document.getElementById("SceneView");
   var view = sceneView
     ? new SceneView({ container: "SceneView", map: webscene })
-    : new MapView({ container: "MapView", map: webscene, constraints: { snapToZoom: false } });
+    : new MapView({
+        container: "MapView",
+        map: webscene,
+        constraints: { snapToZoom: false },
+      });
   var url = params["url"];
   var animate = params["animate"];
   var stats = params["stats"];
 
   if (url) {
     view.map = new WebScene({ basemap: "topo", ground: "world-elevation" });
-    Layer.fromArcGISServerUrl({ url: url }).then(function(layer) {
+    Layer.fromArcGISServerUrl({ url: url }).then(function (layer) {
       view.map.layers.add(layer);
       layer
-        .when(function() {
+        .when(function () {
           return layer.queryExtent();
         })
-        .then(function(response) {
+        .then(function (response) {
           view.goTo(response.extent);
         });
     });
   } else {
     var webscene = params["webscene"] || "819bf90274394de982c6ae8bf5ef11a7";
     if (webscene.startsWith("http")) {
-      esriRequest(webscene).then(function(json) {
+      esriRequest(webscene).then(function (json) {
         view.map = WebScene.fromJSON(json.data);
       });
     } else {
@@ -78,7 +86,9 @@ require([
 
   // The view must be ready (or resolved) before you can
   // access the properties of the WebScene
-  view.when(function() {
+  view.when(function () {
+    // view.basemapTerrain.setBorders(true);
+
     var slides = view.map.presentation.slides;
     var slidesDiv = document.getElementById("slides");
     var benchmarkDiv = document.getElementById("benchmark");
@@ -108,7 +118,7 @@ require([
       slideDiv.appendChild(img);
       div.appendChild(slideDiv);
 
-      slideDiv.addEventListener("click", function() {
+      slideDiv.addEventListener("click", function () {
         slide.applyTo(view);
         syncUtil.syncSlide(slide.id);
       });
@@ -139,7 +149,7 @@ require([
       return;
     }
 
-    slides.forEach(function(slide) {
+    slides.forEach(function (slide) {
       addSlide(slide);
     });
   });
