@@ -26,7 +26,7 @@ require([
   SceneView = SceneView.default || SceneView;
 
   var params = {};
-  var parts = window.parent.location.href.replace(
+  window.parent.location.href.replace(
     /[?&]+([^=&]+)=([^&]*)/gi,
     function (m, key, value) {
       params[key] = value;
@@ -71,7 +71,7 @@ require([
         view.map = WebScene.fromJSON(json.data);
       });
     } else {
-      view.map = new WebScene({ portalItem: { id: webscene } });
+      view.map = new WebScene({ portalItem: { id: webscene, portal } });
     }
   }
 
@@ -87,7 +87,7 @@ require([
   // The view must be ready (or resolved) before you can
   // access the properties of the WebScene
   view.when(function () {
-    // view.basemapTerrain.setBorders(true);
+    // view.basemapTerrain.renderPatchBorders = true;
 
     var slides = view.map.presentation.slides;
     var slidesDiv = document.getElementById("slides");
@@ -155,6 +155,10 @@ require([
   });
 
   function updateStats() {
+    // view.pixelRatio = 2;
+    // view.resourceController.memoryController.maxMemory = 1000;
+    // view.qualityProfile = "high";
+
     setTimeout(updateStats, 1000);
     var textContent = "";
 
