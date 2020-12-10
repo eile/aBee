@@ -24,6 +24,7 @@ require([
   esriRequest = esriRequest.default || esriRequest;
   WebScene = WebScene.default || WebScene;
   SceneView = SceneView.default || SceneView;
+  config = config.default || config;
 
   var params = {};
   window.parent.location.href.replace(
