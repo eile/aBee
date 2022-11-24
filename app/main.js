@@ -1,5 +1,4 @@
 require([
-  "dojo/has",
   "esri/config",
   "esri/request",
   "esri/WebScene",
@@ -10,7 +9,6 @@ require([
   "esri/views/support/waitForResources",
   "app/syncUtil",
 ], function (
-  has,
   config,
   esriRequest,
   WebScene,
@@ -33,8 +31,6 @@ require([
       params[key] = value;
     }
   );
-
-  has.add("disable-feature:single-idb-cache", 1);
 
   var portal = params["portal"];
   if (portal) {
@@ -66,7 +62,7 @@ require([
         });
     });
   } else {
-    var webscene = params["webscene"] || "819bf90274394de982c6ae8bf5ef11a7";
+    var webscene = params["webscene"] || "3fedc732d1be4af9b23ae2348f45ce7d";
     if (webscene.startsWith("http")) {
       esriRequest(webscene).then(function (json) {
         view.map = WebScene.fromJSON(json.data);
@@ -153,13 +149,13 @@ require([
     slides.forEach(function (slide) {
       addSlide(slide);
     });
+
+    view.pixelRatio = 2;
+    view.resourceController.memoryController.maxMemory = 1000;
+    view.qualityProfile = "high";
   });
 
   function updateStats() {
-    // view.pixelRatio = 2;
-    // view.resourceController.memoryController.maxMemory = 1000;
-    // view.qualityProfile = "high";
-
     setTimeout(updateStats, 1000);
     var textContent = "";
 
@@ -191,7 +187,7 @@ require([
 
   !!stats &&
     sceneView &&
-    watchUtils.whenTrueOnce(view, "ready").then(function() {
+    watchUtils.whenTrueOnce(view, "ready").then(function () {
       setTimeout(updateStats, 1);
     });
 });
